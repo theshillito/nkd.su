@@ -1,4 +1,5 @@
 https://www.djangoproject.com/download/1.7c1/tarball/
+# Django>=1.7<1.8
 django-celery
 python-memcached
 tweepy
@@ -10,7 +11,8 @@ slimit
 django-nose
 requests
 django-cache-utils
-django-instant-coverage>=0.0.12
+git+https://github.com/colons/instant-coverage.git@develop
+# django-instant-coverage>=0.0.12
 pillow
 musicbrainzngs
 django-orphaned
