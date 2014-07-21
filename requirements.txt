@@ -1,4 +1,4 @@
-django>=1.6,<1.7
+django>=1.7,<1.8
 django-celery
 python-memcached
 south
@@ -11,7 +11,7 @@ slimit
 django-nose
 requests
 django-cache-utils
-django-instant-coverage>=0.0.5
+django-instant-coverage>=0.0.12
 pillow
 musicbrainzngs
 django-orphaned
