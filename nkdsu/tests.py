@@ -80,10 +80,14 @@ class EverythingTest(
 
         # only accepts POST
         '/vote-admin/shortlist-order/',
+
+        # django-provided, probably okay
+        '/media/woof.jpg'
     ]
 
     uncovered_includes = [
-        ('^admin/',)
+        ('^admin/',),
+        ('^__debug__/',),
     ]
 
     # instant_tracebacks = True
