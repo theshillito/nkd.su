@@ -90,7 +90,7 @@ class EverythingTest(
         ('^__debug__/',),
     ]
 
-    # instant_tracebacks = True
+    instant_tracebacks = True
 
 
 class LoggedInEverythingTest(EverythingTest):
