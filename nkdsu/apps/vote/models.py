@@ -444,8 +444,8 @@ class Track(CleanOnSaveMixin, models.Model):
 
     # nkdsu-specific
     revealed = models.DateTimeField(blank=True, null=True, db_index=True)
-    hidden = models.BooleanField()
-    inudesu = models.BooleanField()
+    hidden = models.BooleanField(default=False)
+    inudesu = models.BooleanField(default=False)
     background_art = models.ImageField(blank=True, upload_to=art_filename)
 
     def __unicode__(self):
@@ -1160,7 +1160,7 @@ class Request(CleanOnSaveMixin, models.Model):
     """
 
     created = models.DateTimeField(auto_now_add=True)
-    successful = models.BooleanField()
+    successful = models.BooleanField(default=False)
     blob = models.TextField()
 
     def serialise(self, struct):
