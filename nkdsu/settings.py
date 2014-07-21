@@ -58,12 +58,12 @@ OPTIONS = {'timeout': 20}
 CONSUMER_KEY = ''  # secret
 CONSUMER_SECRET = ''  # secret
 
-#@nkdsu
+# @nkdsu
 READING_ACCESS_TOKEN = ''  # secret
 READING_ACCESS_TOKEN_SECRET = ''  # secret
 READING_USERNAME = "nkdsu"
 
-#@nekodesuradio
+# @nekodesuradio
 POSTING_ACCESS_TOKEN = ''  # secret
 POSTING_ACCESS_TOKEN_SECRET = ''  # secret
 
@@ -138,7 +138,9 @@ ROOT_URLCONF = 'nkdsu.urls'
 
 WSGI_APPLICATION = 'nkdsu.wsgi.application'
 
-TEMPLATE_DIRS = os.path.join(PROJECT_DIR, 'templates')
+TEMPLATE_DIRS = (
+    os.path.join(PROJECT_DIR, 'templates'),
+)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -152,7 +154,6 @@ INSTALLED_APPS = (
     'django_orphaned',
     'djcelery',
     'pipeline',
-    'south',
     'debug_toolbar',
 
     'nkdsu.apps.vote',
@@ -196,7 +197,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'nkdsu.apps.vote.context_processors.nkdsu_context_processor',
 )
 
-## STATIC
+# STATIC
 
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 

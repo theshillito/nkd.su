@@ -1,7 +1,6 @@
 django>=1.7,<1.8
 django-celery
 python-memcached
-south
 tweepy
 markdown
 ujson
