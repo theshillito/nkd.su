@@ -30,16 +30,16 @@ EMAIL_HOST_USER = 'nivi@musicfortheblind.co.uk'
 EMAIL_USE_TLS = True
 
 # stuff about when the show is
-from dateutil.relativedelta import SA, relativedelta
+from dateutil.relativedelta import SA as sa, relativedelta
 SHOWTIME = relativedelta(
-    weekday=SA,
+    weekday=sa,
     hour=21,
     minute=0,
     second=0,
     microsecond=0,
 )
 SHOW_END = relativedelta(
-    weekday=SA,
+    weekday=sa,
     hour=23,
     minute=0,
     second=0,
