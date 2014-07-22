@@ -45,7 +45,7 @@ class TriviaForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(TriviaForm, self).__init__(*args, **kwargs)
-        self.fields.keyOrder.append(self.fields.keyOrder.pop(1))
+        self.fields['trivia'] = self.fields.pop('trivia')  # put at end
         self.fields['trivia_question'].initial = self.new_question()
 
     def new_question(self):
