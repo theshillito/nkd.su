@@ -4,8 +4,6 @@ from django.contrib import admin
 
 from nkdsu.apps.vote import urls as vote_urls
 
-admin.autodiscover()
-
 urlpatterns = patterns(
     '',
     url(r'^', include(vote_urls, namespace='vote')),
