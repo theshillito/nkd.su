@@ -102,6 +102,7 @@ USE_TZ = True
 
 # these URLs will not work when DEBUG is False; set up your webserver to serve
 # static files from appropriate places and make liberal use of collectstatic
+SITE_URL = 'https://nkd.su'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
@@ -138,9 +139,7 @@ ROOT_URLCONF = 'nkdsu.urls'
 
 WSGI_APPLICATION = 'nkdsu.wsgi.application'
 
-TEMPLATE_DIRS = (
-    os.path.join(PROJECT_DIR, 'templates'),
-)
+TEMPLATE_DIRS = os.path.join(PROJECT_DIR, 'templates')
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -154,6 +153,7 @@ INSTALLED_APPS = (
     'django_orphaned',
     'djcelery',
     'pipeline',
+    'south',
     'debug_toolbar',
 
     'nkdsu.apps.vote',
