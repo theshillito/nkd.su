@@ -7,7 +7,7 @@ ujson==1.33
 python-dateutil==2.2
 django-pipeline==1.3.25
 slimit==0.8.1
-django-nose==1.2
+django-nose==1.3.4
 requests==2.3.0
 django-cache-utils==0.7.2
 git+https://github.com/colons/instant-coverage.git@develop
