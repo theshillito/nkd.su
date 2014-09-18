@@ -57,7 +57,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
-                ('successful', models.BooleanField()),
+                ('successful', models.BooleanField(default=False)),
                 ('blob', models.TextField()),
             ],
             options={
@@ -71,7 +71,7 @@ class Migration(migrations.Migration):
                 ('index', models.IntegerField(default=0)),
             ],
             options={
-                'ordering': [b'-show__showtime', b'index'],
+                'ordering': ['-show__showtime', 'index'],
             },
             bases=(nkdsu.apps.vote.models.CleanOnSaveMixin, models.Model),
         ),
@@ -86,36 +86,6 @@ class Migration(migrations.Migration):
             },
             bases=(nkdsu.apps.vote.models.CleanOnSaveMixin, models.Model),
         ),
-        migrations.AddField(
-            model_name='shortlist',
-            name='show',
-            field=models.ForeignKey(to='vote.Show'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='play',
-            name='show',
-            field=models.ForeignKey(to='vote.Show'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='note',
-            name='show',
-            field=models.ForeignKey(blank=True, to='vote.Show', null=True),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='discard',
-            name='show',
-            field=models.ForeignKey(to='vote.Show'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='block',
-            name='show',
-            field=models.ForeignKey(to='vote.Show'),
-            preserve_default=True,
-        ),
         migrations.CreateModel(
             name='Track',
             fields=[
@@ -126,55 +96,13 @@ class Migration(migrations.Migration):
                 ('msec', models.IntegerField(null=True, blank=True)),
                 ('added', models.DateTimeField()),
                 ('revealed', models.DateTimeField(db_index=True, null=True, blank=True)),
-                ('hidden', models.BooleanField()),
-                ('inudesu', models.BooleanField()),
+                ('hidden', models.BooleanField(default=False)),
+                ('inudesu', models.BooleanField(default=False)),
                 ('background_art', models.ImageField(upload_to=nkdsu.apps.vote.models.art_filename, blank=True)),
             ],
             options={
             },
             bases=(nkdsu.apps.vote.models.CleanOnSaveMixin, models.Model),
-        ),
-        migrations.AddField(
-            model_name='shortlist',
-            name='track',
-            field=models.ForeignKey(to='vote.Track'),
-            preserve_default=True,
-        ),
-        migrations.AlterUniqueTogether(
-            name='shortlist',
-            unique_together=set([(b'show', b'track'), (b'show', b'index')]),
-        ),
-        migrations.AddField(
-            model_name='play',
-            name='track',
-            field=models.ForeignKey(to='vote.Track'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='note',
-            name='track',
-            field=models.ForeignKey(to='vote.Track'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='discard',
-            name='track',
-            field=models.ForeignKey(to='vote.Track'),
-            preserve_default=True,
-        ),
-        migrations.AlterUniqueTogether(
-            name='discard',
-            unique_together=set([(b'show', b'track')]),
-        ),
-        migrations.AddField(
-            model_name='block',
-            name='track',
-            field=models.ForeignKey(to='vote.Track'),
-            preserve_default=True,
-        ),
-        migrations.AlterUniqueTogether(
-            name='block',
-            unique_together=set([(b'show', b'track')]),
         ),
         migrations.CreateModel(
             name='TwitterUser',
@@ -200,12 +128,84 @@ class Migration(migrations.Migration):
                 ('tweet_id', models.BigIntegerField(null=True, blank=True)),
                 ('name', models.CharField(max_length=40, blank=True)),
                 ('kind', models.CharField(blank=True, max_length=10, choices=[(b'email', b'email'), (b'text', b'text'), (b'tweet', b'tweet')])),
-                ('show', models.ForeignKey(to='vote.Show')),
+                ('show', models.ForeignKey(related_name=b'vote_set', to='vote.Show')),
                 ('tracks', models.ManyToManyField(to='vote.Track', db_index=True)),
                 ('twitter_user', models.ForeignKey(blank=True, to='vote.TwitterUser', null=True)),
             ],
             options={
             },
             bases=(nkdsu.apps.vote.models.SetShowBasedOnDateMixin, nkdsu.apps.vote.models.CleanOnSaveMixin, models.Model),
+        ),
+        migrations.AddField(
+            model_name='shortlist',
+            name='show',
+            field=models.ForeignKey(to='vote.Show'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='shortlist',
+            name='track',
+            field=models.ForeignKey(to='vote.Track'),
+            preserve_default=True,
+        ),
+        migrations.AlterUniqueTogether(
+            name='shortlist',
+            unique_together=set([('show', 'track'), ('show', 'index')]),
+        ),
+        migrations.AddField(
+            model_name='play',
+            name='show',
+            field=models.ForeignKey(to='vote.Show'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='play',
+            name='track',
+            field=models.ForeignKey(to='vote.Track'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='note',
+            name='show',
+            field=models.ForeignKey(blank=True, to='vote.Show', null=True),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='note',
+            name='track',
+            field=models.ForeignKey(to='vote.Track'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='discard',
+            name='show',
+            field=models.ForeignKey(to='vote.Show'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='discard',
+            name='track',
+            field=models.ForeignKey(to='vote.Track'),
+            preserve_default=True,
+        ),
+        migrations.AlterUniqueTogether(
+            name='discard',
+            unique_together=set([('show', 'track')]),
+        ),
+        migrations.AddField(
+            model_name='block',
+            name='show',
+            field=models.ForeignKey(to='vote.Show'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='block',
+            name='track',
+            field=models.ForeignKey(to='vote.Track'),
+            preserve_default=True,
+        ),
+        migrations.AlterUniqueTogether(
+            name='block',
+            unique_together=set([('show', 'track')]),
         ),
     ]

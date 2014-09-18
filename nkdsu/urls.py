@@ -1,3 +1,5 @@
+from sys import argv
+
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
@@ -15,7 +17,7 @@ urlpatterns = patterns(
     url(r'^login/', 'django.contrib.auth.views.login', name='login'),
 )
 
-if settings.DEBUG:
+if settings.DEBUG and 'test' not in argv:
     urlpatterns += patterns(
         '',
         (r'^media/(?P<path>.*)$', 'django.views.static.serve', {

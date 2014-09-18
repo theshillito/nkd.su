@@ -5,7 +5,8 @@ from instant_coverage import InstantCoverageMixin, optional
 
 
 class EverythingTest(
-    optional.ExternalLinks, optional.ValidHTML5, optional.ValidJSON,
+    # optional.ExternalLinks,  # XXX
+    optional.ValidHTML5, optional.ValidJSON,
     InstantCoverageMixin, TestCase
 ):
     fixtures = ['vote.json']
@@ -80,14 +81,11 @@ class EverythingTest(
 
         # only accepts POST
         '/vote-admin/shortlist-order/',
-
-        # django-provided, probably okay
-        '/media/woof.jpg'
     ]
 
     uncovered_includes = [
-        ('^admin/',),
-        ('^__debug__/',),
+        (r'^admin/',),
+        (r'^__debug__/',),
     ]
 
     instant_tracebacks = True
@@ -96,6 +94,7 @@ class EverythingTest(
 class LoggedInEverythingTest(EverythingTest):
     def setUp(self):
         super(LoggedInEverythingTest, self).setUp()
+
         user = get_user_model()(
             username='what',
             is_staff=True,

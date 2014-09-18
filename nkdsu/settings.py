@@ -139,7 +139,9 @@ ROOT_URLCONF = 'nkdsu.urls'
 
 WSGI_APPLICATION = 'nkdsu.wsgi.application'
 
-TEMPLATE_DIRS = os.path.join(PROJECT_DIR, 'templates')
+TEMPLATE_DIRS = (
+    os.path.join(PROJECT_DIR, 'templates'),
+)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -153,7 +155,6 @@ INSTALLED_APPS = (
     'django_orphaned',
     'djcelery',
     'pipeline',
-    'south',
     'debug_toolbar',
 
     'nkdsu.apps.vote',
