@@ -8,6 +8,7 @@ from urlparse import urlparse
 
 from cache_utils.decorators import cached
 from dateutil import parser as date_parser
+from markdown import markdown
 import requests
 from PIL import Image, ImageFilter
 
@@ -53,6 +54,7 @@ class Show(CleanOnSaveMixin, models.Model):
 
     showtime = models.DateTimeField(db_index=True)
     end = models.DateTimeField(db_index=True)
+    message = models.TextField(blank=True)
 
     def __str__(self):
         return '<Show for %r>' % (self.showtime.date())
@@ -296,6 +298,9 @@ class Show(CleanOnSaveMixin, models.Model):
             'showtime': self.showtime,
             'finish': self.end,
             'start': start,
+            'broadcasting': self.broadcasting(),
+            'message_markdown': self.message or None,
+            'message_html': markdown(self.message) if self.message else None,
         }
 
 
@@ -425,6 +430,14 @@ class TwitterUser(CleanOnSaveMixin, models.Model):
         self.updated = timezone.now()
 
         self.save()
+
+    def api_dict(self, verbose=False):
+        return {
+            'user_name': self.name,
+            'user_screen_name': self.screen_name,
+            'user_image': self.user_image,
+            'user_id': self.user_id,
+        }
 
 
 def art_filename(i, f):
@@ -682,7 +695,7 @@ class Track(CleanOnSaveMixin, models.Model):
                                              'pk': self.pk})
 
     def get_public_url(self):
-        return 'https://nkd.su' + self.get_absolute_url()
+        return settings.SITE_URL + self.get_absolute_url()
 
     def get_report_url(self):
         return reverse('vote:report', kwargs={'pk': self.pk})
@@ -809,9 +822,16 @@ class Track(CleanOnSaveMixin, models.Model):
             'title': self.title,
             'role': self.role,
             'artist': self.artist,
+            'eligible': self.eligible(),
+            'ineligibility_reason': self.ineligible() or None,
             'length': self.msec,
             'inu desu': self.inudesu,
             'url': self.get_public_url(),
+            'background': (
+                self.background_art.url
+                if self.background_art
+                else None
+            ),
         }
 
         if verbose:
@@ -1033,12 +1053,9 @@ class Vote(SetShowBasedOnDateMixin, CleanOnSaveMixin, models.Model):
 
         if not self.is_manual:
             the_vote.update({
-                'user_name': self.twitter_user.name,
-                'user_screen_name': self.twitter_user.screen_name,
-                'user_image': self.twitter_user.user_image,
-                'user_id': self.twitter_user.user_id,
                 'tweet_id': self.tweet_id,
             })
+            the_vote.update(self.twitter_user.api_dict())
 
         return the_vote
 

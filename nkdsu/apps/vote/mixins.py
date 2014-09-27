@@ -12,7 +12,7 @@ from django.shortcuts import redirect
 from django.utils import timezone
 from django.views.generic import DetailView, TemplateView
 
-from .models import Show
+from .models import Show, TwitterUser
 from .utils import memoize
 
 
@@ -104,6 +104,24 @@ class ShowDetailMixin(object):
         return context
 
 
+class ThisShowDetailMixin(ShowDetailMixin):
+    """
+    Like ShowDetailMixin, but defaults to the show in progress when no date is
+    provided.
+    """
+
+    @memoize
+    def get_object(self):
+        if self.date is None:
+            qs = self.model.objects.order_by('-end')
+            try:
+                return qs[0]
+            except IndexError:
+                raise Http404
+        else:
+            return super(ThisShowDetailMixin, self).get_object()
+
+
 class ShowDetail(ShowDetailMixin, DetailView):
     pass
 
@@ -125,3 +143,24 @@ class MarkdownView(TemplateView):
         })
 
         return context
+
+
+class TwitterUserDetailMixin(object):
+    model = TwitterUser
+
+    @memoize
+    def get_object(self):
+        users = self.model.objects.filter(
+            screen_name__iexact=self.kwargs['screen_name'])
+
+        if not users.exists():
+            raise Http404
+        elif users.count() == 1:
+            user = users[0]
+        else:
+            user = users.order_by('-updated')[0]
+
+        if user.vote_set.exists():
+            return user
+        else:
+            raise Http404

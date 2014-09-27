@@ -1,7 +1,9 @@
 {% extends parent %}
-{% load compressed vote_tags %}
+{% load vote_tags %}
   
 {% block content %}
+
+  {% include "include/show_message.html" %}
 
   {% if show.playlist %}
     <div id="playlist">

@@ -1,8 +1,7 @@
-## What is this?
+# What is this?
 
 [nkd.su] is a request-gathering and voting service for [The Cat]'s [Neko Desu]
-radio show. Songs are sorted according to which was voted for most recently on
-the front page.
+radio show.
 
 [nkd.su]: https://nkd.su
 [The Cat]: http://thisisthecat.com
@@ -30,10 +29,10 @@ they're also following [@nkdsu].
 [request an addition]: https://nkd.su/request
 [@nkdsu]: https://twitter.com/nkdsu
 
-### All this is well and good but I don't have a Twitter account
+### All this is well and good but I don't like Twitter.
 
-You should! It's a neat thing! If you're determined not to join, though, you
-could just send Peter an [email] or a text or something.
+Yeah, I get it. In that case, just send Peter an [email] or a text or
+something.
 
 [email]: mailto:peter.shillito@thisisthecat.com
 
@@ -51,9 +50,9 @@ Long answer: [GitHub]. [Suggestions] welcome.
 
 Hopefully! Only Travis knows for sure:
 
-[![Build Status]](https://travis-ci.org/colons/nkd.su)
+[![Build Status](https://travis-ci.org/colons/nkd.su.svg)][build status]
 
-[Build status]: https://travis-ci.org/colons/nkd.su.svg
+[build status]: https://travis-ci.org/colons/nkd.su
 
 ## Can I build things with this data?
 
@@ -63,11 +62,13 @@ know][Suggestions].
 
 ## Who's to blame?
 
-[Iain Dawson][Iain] ([@mftb]), with design contributions from [Chris
-Walden][Chris] ([@EuricaeriS]) and [Peter Shillito] himself.
+[Iain Dawson] ([@mftb]) and [contributors] including [Thomas Moore], with
+design help from [Chris Walden] ([@EuricaeriS]) and [Peter Shillito] himself.
 
-[Iain]: https://colons.co/
+[Iain Dawson]: https://colons.co/
 [@mftb]: https://twitter.com/mftb
-[Chris]: http://www.chriswalden.co.uk/
+[contributors]: https://github.com/colons/nkd.su/graphs/contributors
+[Thomas Moore]: https://github.com/Tomo-san
+[Chris Walden]: http://www.chriswalden.co.uk/
 [@EuricaeriS]: https://twitter.com/EuricaeriS
 [Peter Shillito]: https://twitter.com/theshillito
