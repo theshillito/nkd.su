@@ -1,36 +1,44 @@
-from typing import Optional
+from __future__ import annotations
+
+from abc import ABC, abstractmethod
+from typing import Any, Dict, Optional
 
 from django.conf import settings
-from django.http import HttpResponse
+from django.db.models import QuerySet
+from django.http import HttpRequest, HttpResponse, QueryDict
 from django.views.generic import TemplateView
 
 from ..models import Track
 from ..utils import tweet_len, tweet_url, vote_tweet
 
 
-class JSApiMixin(object):
+class JSApiMixin(ABC):
     # Yes, it's traversed like HTML, but it's *not* HTML. None of these even
     # have <html> elements.
     content_type: Optional[str] = 'text/plain'
 
-    def post(self, request):
+    def post(self, request: HttpRequest) -> HttpResponse:
         result = self.do_thing(request.POST)
         return HttpResponse(result, content_type=self.content_type)
+
+    @abstractmethod
+    def do_thing(self, post: Optional[QueryDict] = None) -> None:
+        raise NotImplementedError()
 
 
 class SelectionView(JSApiMixin, TemplateView):
     template_name = 'minitracklist.html'
     model = Track
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[Track]:
         return self.model.objects.filter(
             pk__in=self.request.session.get('selection', set()))
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         self.request = request
         self.do_thing()
 
-        context = {}
+        context: Dict[str, Any] = {}
 
         selection = self.get_queryset()
         context['selection'] = selection
@@ -43,12 +51,12 @@ class SelectionView(JSApiMixin, TemplateView):
 
 
 class GetSelection(SelectionView):
-    def do_thing(self):
+    def do_thing(self, post=None) -> None:
         pass
 
 
 class Select(SelectionView):
-    def do_thing(self):
+    def do_thing(self, post=None) -> None:
         new_pks = self.request.POST.getlist('track_pk[]', [])
         selection = set(self.request.session.get('selection', []))
 
@@ -73,7 +81,7 @@ class Select(SelectionView):
 
 
 class Deselect(SelectionView):
-    def do_thing(self):
+    def do_thing(self, post=None) -> None:
         unwanted_pks = self.request.POST.getlist('track_pk[]', [])
         selection = set(self.request.session.get('selection', []))
 
@@ -85,5 +93,5 @@ class Deselect(SelectionView):
 
 
 class ClearSelection(SelectionView):
-    def do_thing(self):
+    def do_thing(self, post=None) -> None:
         self.request.session['selection'] = []

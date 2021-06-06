@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 import re
 from functools import partial
-from typing import Any, Callable, List, Optional, TYPE_CHECKING, Tuple, TypeVar, cast
+from typing import Any, Callable, Iterable, List, Optional, TYPE_CHECKING, Tuple, TypeVar, cast
 
 from classtools import reify as ct_reify
 from django.conf import settings
@@ -104,7 +104,7 @@ def vote_url(tracks):
     return tweet_url(vote_tweet(tracks))
 
 
-def vote_tweet(tracks: List[Track]) -> str:
+def vote_tweet(tracks: Iterable[Track]) -> str:
     """
     Return what a person should tweet to request `tracks`.
     """

@@ -80,6 +80,7 @@ class ListenRedirect(mixins.ShowDetail):
 
     def get(self, *a, **k) -> HttpResponse:
         super().get(*a, **k)
+        assert isinstance(self.object, Show)
         cloudcasts = self.object.cloudcasts()
         if len(cloudcasts) == 1:
             return redirect(cloudcasts[0]['url'])

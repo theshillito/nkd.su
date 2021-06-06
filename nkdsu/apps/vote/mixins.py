@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import codecs
 import datetime
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from copy import copy
 from os import path
 from typing import Any, Dict, List, Optional, Tuple, Type
@@ -29,7 +29,7 @@ class CurrentShowMixin(ContextMixin):
         return context
 
 
-class LetMemoizeGetObject:
+class LetMemoizeGetObject(ABC):
     def get_object(self, queryset: Optional[QuerySet] = None) -> Model:
         if queryset is None:
             return self._get_object()
@@ -48,7 +48,7 @@ class ShowDetailMixin(LetMemoizeGetObject):
     in context.
     """
 
-    model: Optional[Type[Model]] = Show
+    model: Type[Show] = Show
     view_name: Optional[str] = None
     default_to_current = False
 

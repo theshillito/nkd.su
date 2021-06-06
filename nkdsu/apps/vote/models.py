@@ -3,6 +3,7 @@ from __future__ import annotations
 import datetime
 import json
 import re
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from io import BytesIO
 from string import ascii_letters
@@ -54,6 +55,15 @@ class SetShowBasedOnDateMixin:
     def save(self, *args, **kwargs):
         self.show = Show.at(self.date)
         return super().save(*args, **kwargs)
+
+
+class APIModel(models.Model):
+    class Meta:
+        abstract = True
+
+    @abstractmethod
+    def api_dict(self, verbose: bool = False) -> Dict[str, Any]:
+        raise NotImplementedError
 
 
 class Show(CleanOnSaveMixin, models.Model):
